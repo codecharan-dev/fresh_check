@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-/// Programmatic navigation without [BuildContext].
-///
-/// Useful for navigating from Blocs, services, or anywhere outside the
-/// widget tree. The [GoRouter] instance is set once via the [router] setter —
-/// called automatically when [AppRouter.instance] is first accessed.
-///
-/// Usage (from a Bloc or service):
-/// ```dart
-/// NavigationService.go(RoutePaths.home);
-/// NavigationService.goNamed(RouteNames.scanResult, extra: result);
-/// ```
+// Context-free navigation for BLoCs, services, and callbacks.
+//
+// Methods are grouped by platform recommendation:
+//
+//   Mobile (Android / iOS)
+//     push, pushNamed, pushReplacement, pushReplacementNamed, pop
+//     → Imperative — plays page transitions, ideal for stack-based mobile UX.
+//
+//   Web (browser)
+//     go, goNamed
+//     → Declarative — replaces the entire stack AND updates the browser URL.
+//       On mobile these still work but skip page transitions.
+//
+//   All platforms
+//     replace, replaceNamed, pop, canPop, refresh, currentLocation, currentMatch
+//     → Utility methods that behave identically everywhere.
+//
+// Usage:
+//   NavigationService.push(RoutePaths.scan);
+//   NavigationService.pushReplacement(RoutePaths.welcome);
+//   NavigationService.go(RoutePaths.home);
 class NavigationService {
   NavigationService._();
 
@@ -22,16 +32,76 @@ class NavigationService {
 
   static late GoRouter _router;
 
-  /// Set once by [AppRouter] immediately after the [GoRouter] is built.
+  /// Set once by the DI lambda in [initCoreDependencies] immediately after
+  /// [AppRouter.build] returns.
   static set router(GoRouter value) => _router = value;
 
-  // ── Navigation helpers ────────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MOBILE (Android / iOS) — imperative, plays page transitions
+  // ═══════════════════════════════════════════════════════════════════════════
 
-  /// Navigate to [location] (full path), replacing the current stack entry.
+  /// Push [location] onto the stack — plays the destination's page transition.
+  static Future<T?> push<T extends Object?>(
+    String location, {
+    Object? extra,
+  }) =>
+      _router.push(location, extra: extra);
+
+  /// Push a named route onto the stack — plays the destination's page
+  /// transition.
+  static Future<T?> pushNamed<T extends Object?>(
+    String name, {
+    Map<String, String> pathParameters = const {},
+    Map<String, dynamic> queryParameters = const {},
+    Object? extra,
+  }) =>
+      _router.pushNamed(
+        name,
+        pathParameters: pathParameters,
+        queryParameters: queryParameters,
+        extra: extra,
+      );
+
+  /// Replace the top-most route with [location] — plays the page transition.
+  ///
+  /// Use for flows like splash → welcome where the user should not go back.
+  static Future<T?> pushReplacement<T extends Object?>(
+    String location, {
+    Object? extra,
+  }) =>
+      _router.pushReplacement(location, extra: extra);
+
+  /// Replace the top-most route with a named route — plays the page
+  /// transition.
+  static Future<T?> pushReplacementNamed<T extends Object?>(
+    String name, {
+    Map<String, String> pathParameters = const {},
+    Map<String, dynamic> queryParameters = const {},
+    Object? extra,
+  }) =>
+      _router.pushReplacementNamed(
+        name,
+        pathParameters: pathParameters,
+        queryParameters: queryParameters,
+        extra: extra,
+      );
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // WEB (browser) — declarative, updates the URL bar
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  /// Navigate to [location], replacing the entire navigation stack.
+  ///
+  /// On web this updates the browser URL. On mobile it works but skips
+  /// page transitions — prefer [push] / [pushReplacement] on mobile.
   static void go(String location, {Object? extra}) =>
       _router.go(location, extra: extra);
 
-  /// Navigate to a named route.
+  /// Navigate to a named route, replacing the entire navigation stack.
+  ///
+  /// On web this updates the browser URL. On mobile it works but skips
+  /// page transitions — prefer [pushNamed] / [pushReplacementNamed]
+  /// on mobile.
   static void goNamed(
     String name, {
     Map<String, String> pathParameters = const {},
@@ -45,28 +115,62 @@ class NavigationService {
         extra: extra,
       );
 
-  /// Push [location] onto the navigation stack.
-  static Future<T?> push<T>(String location, {Object? extra}) =>
-      _router.push(location, extra: extra);
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ALL PLATFORMS — utility methods
+  // ═══════════════════════════════════════════════════════════════════════════
 
-  /// Push a named route onto the navigation stack.
-  static Future<T?> pushNamed<T>(
+  // ── Silent replacement (no animation) ──────────────────────────────
+
+  /// Swap the current route with [location] without any page transition.
+  ///
+  /// Treats the new route as the "same page" — useful for updating
+  /// path/query parameters silently (e.g. filter changes in a list).
+  static void replace(String location, {Object? extra}) =>
+      _router.replace(location, extra: extra);
+
+  /// Swap the current route with a named route without any page transition.
+  static void replaceNamed(
     String name, {
     Map<String, String> pathParameters = const {},
     Map<String, dynamic> queryParameters = const {},
     Object? extra,
   }) =>
-      _router.pushNamed(
+      _router.replaceNamed(
         name,
         pathParameters: pathParameters,
         queryParameters: queryParameters,
         extra: extra,
       );
 
-  /// Pop the top-most route.
-  static void pop<T>([T? result]) => _router.pop(result);
+  // ── Pop ─────────────────────────────────────────────────────────────
 
-  /// Replace the current route with [location].
-  static void replace(String location, {Object? extra}) =>
-      _router.replace(location, extra: extra);
+  /// Pop the top-most route, optionally returning [result] to the caller.
+  static void pop<T extends Object?>([T? result]) => _router.pop(result);
+
+  // ── Query ───────────────────────────────────────────────────────────
+
+  /// Whether the top-most route can be popped.
+  ///
+  /// Returns `false` when the current route is the last route in the stack
+  /// (e.g. the initial route). Useful in BLoCs to decide whether to pop
+  /// or navigate elsewhere.
+  static bool canPop() => _router.canPop();
+
+  /// The current top-most [RouteMatch].
+  ///
+  /// Useful for reading the matched route from outside the widget tree.
+  static RouteMatch get currentMatch =>
+      _router.routerDelegate.currentConfiguration.last;
+
+  /// The current full URI string (e.g. `/scan/result?id=42`).
+  static String get currentLocation =>
+      _router.routerDelegate.currentConfiguration.uri.toString();
+
+  // ── Refresh ─────────────────────────────────────────────────────────
+
+  /// Force the router to re-evaluate its current route.
+  ///
+  /// Triggers the [redirect] callback again — useful after login/logout
+  /// to re-evaluate auth guards without an explicit navigation call.
+  static void refresh() => _router.refresh();
 }

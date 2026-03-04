@@ -26,16 +26,17 @@ import 'package:fresh_check/app/routes/route_guards.dart';
 import 'package:fresh_check/app/routes/route_names.dart';
 import 'package:fresh_check/app/routes/route_paths.dart';
 import 'package:fresh_check/features/auth/di/auth_injection.dart';
+import 'package:fresh_check/features/auth/presentation/screens/login_screen.dart';
+import 'package:fresh_check/features/auth/presentation/screens/signup_screen.dart';
 import 'package:fresh_check/features/history/di/history_injection.dart';
 import 'package:fresh_check/features/profile/di/profile_injection.dart';
 import 'package:fresh_check/features/scan/di/scan_injection.dart';
 import 'package:fresh_check/features/settings/di/settings_injection.dart';
+import 'package:fresh_check/features/splash/di/splash_injection.dart';
+import 'package:fresh_check/features/splash/presentation/screens/splash_screen.dart';
 import 'package:fresh_check/features/subscription/di/subscription_injection.dart';
+import 'package:fresh_check/features/welcome/presentation/screens/welcome_screen.dart';
 import 'package:go_router/go_router.dart';
-
-// Feature page imports — uncomment as each feature is built:
-// import 'package:fresh_check/features/auth/presentation/screens/login_screen.dart';
-// import 'package:fresh_check/features/auth/presentation/screens/register_screen.dart';
 // import 'package:fresh_check/features/scan/presentation/screens/scan_screen.dart';
 // import 'package:fresh_check/features/scan/presentation/screens/scan_result_screen.dart';
 // import 'package:fresh_check/features/history/presentation/screens/history_screen.dart';
@@ -65,15 +66,30 @@ class AppRouter {
       errorBuilder: (context, state) => _ErrorScreen(error: state.error),
       routes: [
         // ── Splash ───────────────────────────────────────────────────────────
-        // No feature injection — splash owns async service init via SplashBloc.
         GoRoute(
           path: RoutePaths.splash,
           name: RouteNames.splash,
+          pageBuilder: (context, state) {
+            registerSplashDependencies();
+            return AppRouteTransitions.buildPage(
+              context: context,
+              state: state,
+              child: const SplashScreen(),
+              transition: AppTransition.fade,
+            );
+          },
+        ),
+
+        // ── Welcome ──────────────────────────────────────────────────────────
+        // Uses push() from splash — slide transition plays on entry.
+        // PopScope(canPop: false) in WelcomeScreen prevents back to splash.
+        GoRoute(
+          path: RoutePaths.welcome,
+          name: RouteNames.welcome,
           pageBuilder: (context, state) => AppRouteTransitions.buildPage(
             context: context,
             state: state,
-            child: const _SplashPlaceholder(),
-            transition: AppTransition.fade,
+            child: const WelcomeScreen(),
           ),
         ),
 
@@ -86,8 +102,7 @@ class AppRouter {
             return AppRouteTransitions.buildPage(
               context: context,
               state: state,
-              child: const _PlaceholderScreen(label: 'Login'),
-              // Replace with: child: const LoginScreen(),
+              child: const LoginScreen(),
             );
           },
         ),
@@ -99,8 +114,7 @@ class AppRouter {
             return AppRouteTransitions.buildPage(
               context: context,
               state: state,
-              child: const _PlaceholderScreen(label: 'Register'),
-              // Replace with: child: const RegisterScreen(),
+              child: const SignupScreen(),
             );
           },
         ),
@@ -221,26 +235,6 @@ class AppRouter {
 // Replace each pageBuilder child with the real page when the feature is built.
 // Delete these classes once all routes are wired to real pages.
 // ─────────────────────────────────────────────────────────────────────────────
-
-class _SplashPlaceholder extends StatelessWidget {
-  const _SplashPlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'FreshCheck',
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Colors.red,
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _PlaceholderScreen extends StatelessWidget {
   const _PlaceholderScreen({required this.label});
