@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "368703838612",
+    "project_id": "freshcheck-prod",
+    "storage_bucket": "freshcheck-prod.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368703838612:android:b2f37ba77e12fbcbf79781",
+        "android_client_info": {
+          "package_name": "com.app.fresh_check"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMNw0PmF69UFsUVrZiAoiB4pHkvA4CoVY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

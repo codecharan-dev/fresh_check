@@ -1,0 +1,114 @@
+# ============================================================
+# FreshCheck — Strict Lint Configuration
+# Base: package:flutter_lints/flutter.yaml
+# ============================================================
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  # Treat these categories as errors, not just warnings
+  errors:
+    # Unsafe casts and null issues → hard errors
+    invalid_assignment: error
+    missing_return: error
+    dead_code: error
+    unnecessary_null_comparison: error
+    invalid_null_aware_operator: error
+    # Unreachable catch / missing await are real bugs
+    body_might_complete_normally: error
+    missing_required_param: error
+    # Unused imports pollute builds
+    unused_import: error
+    unused_local_variable: warning
+
+  exclude:
+    # Never lint generated files
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "lib/generated/**"
+    - "build/**"
+
+linter:
+  rules:
+    # ----------------------------------------------------------
+    # CONST / COMPILE-TIME PERFORMANCE
+    # ----------------------------------------------------------
+    prefer_const_constructors: true
+    prefer_const_constructors_in_immutables: true
+    prefer_const_declarations: true
+    prefer_const_literals_to_create_immutables: true
+    unnecessary_const: true
+
+    # ----------------------------------------------------------
+    # WIDGET EFFICIENCY
+    # ----------------------------------------------------------
+    use_key_in_widget_constructors: true
+    sized_box_for_whitespace: true
+    sized_box_shrink_expand: true
+    use_decorated_box: true
+    avoid_unnecessary_containers: true
+
+    # ----------------------------------------------------------
+    # MEMORY SAFETY & RESOURCE MANAGEMENT
+    # ----------------------------------------------------------
+    cancel_subscriptions: true
+    close_sinks: true
+    avoid_dynamic_calls: true
+    avoid_slow_async_io: true
+
+    # ----------------------------------------------------------
+    # NULL SAFETY
+    # ----------------------------------------------------------
+    no_leading_underscores_for_local_identifiers: true
+
+    # ----------------------------------------------------------
+    # TYPE SAFETY
+    # ----------------------------------------------------------
+    always_specify_types: false       # too verbose with generics — rely on inference
+    avoid_annotating_with_dynamic: true
+    prefer_typing_uninitialized_variables: true
+    omit_local_variable_types: false
+
+    # ----------------------------------------------------------
+    # CODE STYLE & READABILITY
+    # ----------------------------------------------------------
+    prefer_single_quotes: true
+    always_use_package_imports: true
+    directives_ordering: true
+    sort_child_properties_last: true
+    avoid_print: true                 # use a logger in production code
+    avoid_empty_else: true
+    avoid_redundant_argument_values: true
+    unnecessary_brace_in_string_interps: true
+    unnecessary_lambdas: true
+    unnecessary_null_in_if_null_operators: true
+    unnecessary_parenthesis: true
+    unnecessary_raw_strings: true
+    unnecessary_string_escapes: true
+    unnecessary_string_interpolations: true
+
+    # ----------------------------------------------------------
+    # ASYNC CORRECTNESS
+    # ----------------------------------------------------------
+    unawaited_futures: true
+    avoid_void_async: true
+    discarded_futures: true
+
+    # ----------------------------------------------------------
+    # CLASS & MEMBER DESIGN
+    # ----------------------------------------------------------
+    use_super_parameters: true
+    use_setters_to_change_properties: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    prefer_final_in_for_each: true
+    prefer_if_null_operators: true
+    prefer_null_aware_operators: true
+
+    # ----------------------------------------------------------
+    # ERRORS / DEAD CODE
+    # ----------------------------------------------------------
+    no_duplicate_case_values: true
+    valid_regexps: true
+    test_types_in_equals: true
+    throw_in_finally: true
