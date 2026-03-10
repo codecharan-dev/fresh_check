@@ -33,6 +33,7 @@ export 'package:fresh_check/shared/widgets/images/placeholder_image.dart';
 export 'package:fresh_check/shared/widgets/images/svg_view.dart';
 
 // ── Inputs ────────────────────────────────────────────────────────────────────
+export 'package:fresh_check/shared/widgets/inputs/email_field.dart';
 export 'package:fresh_check/shared/widgets/inputs/otp_field.dart';
 export 'package:fresh_check/shared/widgets/inputs/password_field.dart';
 export 'package:fresh_check/shared/widgets/inputs/search_field.dart';

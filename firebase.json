@@ -1,1 +1,88 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"fresh-check-staging","appId":"1:850273542779:android:912347fd6513bda7a6b8de","fileOutput":"android/app/google-services.json"},"buildConfigurations":{"src/dev":{"projectId":"freshcheck-dev-3a5fd","appId":"1:143903378530:android:27ac016c7a6f233c0c553b","fileOutput":"android/app/src/dev/google-services.json"},"src/qa":{"projectId":"freshcheck-qa","appId":"1:764127094591:android:5e3eb7e76e21f96e87958a","fileOutput":"android/app/src/qa/google-services.json"},"src/staging":{"projectId":"freshcheck-staging","appId":"1:187557542336:android:c9f32c69bedca653adf025","fileOutput":"android/app/src/staging/google-services.json"},"src/prod":{"projectId":"freshcheck-prod","appId":"1:368703838612:android:b2f37ba77e12fbcbf79781","fileOutput":"android/app/src/prod/google-services.json"}}},"ios":{"default":{"projectId":"fresh-check-staging","appId":"1:850273542779:ios:10c58e40f8708244a6b8de","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"},"buildConfigurations":{"Debug":{"projectId":"freshcheck-prod","appId":"1:368703838612:ios:5f96267dc7a6319df79781","uploadDebugSymbols":false,"fileOutput":"ios/Firebase/prod/GoogleService-Info.plist"}}},"dart":{"lib/firebase_options.dart":{"projectId":"fresh-check-staging","configurations":{"android":"1:850273542779:android:912347fd6513bda7a6b8de","ios":"1:850273542779:ios:10c58e40f8708244a6b8de"}},"lib/firebase_options_dev.dart":{"projectId":"freshcheck-dev-3a5fd","configurations":{"android":"1:143903378530:android:27ac016c7a6f233c0c553b","ios":"1:143903378530:ios:1e3484777fcaf1540c553b"}},"lib/firebase_options_qa.dart":{"projectId":"freshcheck-qa","configurations":{"android":"1:764127094591:android:5e3eb7e76e21f96e87958a","ios":"1:764127094591:ios:6907b8694dd0397087958a"}},"lib/firebase_options_staging.dart":{"projectId":"freshcheck-staging","configurations":{"android":"1:187557542336:android:c9f32c69bedca653adf025","ios":"1:187557542336:ios:d80de4eaac71094cadf025"}},"lib/firebase_options_prod.dart":{"projectId":"freshcheck-prod","configurations":{"android":"1:368703838612:android:b2f37ba77e12fbcbf79781","ios":"1:368703838612:ios:5f96267dc7a6319df79781"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "fresh-check-staging",
+          "appId": "1:850273542779:android:912347fd6513bda7a6b8de",
+          "fileOutput": "android/app/google-services.json"
+        },
+        "buildConfigurations": {
+          "src/dev": {
+            "projectId": "freshcheck-dev-3a5fd",
+            "appId": "1:143903378530:android:27ac016c7a6f233c0c553b",
+            "fileOutput": "android/app/src/dev/google-services.json"
+          },
+          "src/qa": {
+            "projectId": "freshcheck-qa",
+            "appId": "1:764127094591:android:5e3eb7e76e21f96e87958a",
+            "fileOutput": "android/app/src/qa/google-services.json"
+          },
+          "src/staging": {
+            "projectId": "freshcheck-staging",
+            "appId": "1:187557542336:android:c9f32c69bedca653adf025",
+            "fileOutput": "android/app/src/staging/google-services.json"
+          },
+          "src/prod": {
+            "projectId": "freshcheck-prod",
+            "appId": "1:368703838612:android:b2f37ba77e12fbcbf79781",
+            "fileOutput": "android/app/src/prod/google-services.json"
+          }
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "fresh-check-staging",
+          "appId": "1:850273542779:ios:10c58e40f8708244a6b8de",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        },
+        "buildConfigurations": {
+          "Debug": {
+            "projectId": "freshcheck-prod",
+            "appId": "1:368703838612:ios:5f96267dc7a6319df79781",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/Firebase/prod/GoogleService-Info.plist"
+          }
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "fresh-check-staging",
+          "configurations": {
+            "android": "1:850273542779:android:912347fd6513bda7a6b8de",
+            "ios": "1:850273542779:ios:10c58e40f8708244a6b8de"
+          }
+        },
+        "lib/firebase_options_dev.dart": {
+          "projectId": "freshcheck-dev-3a5fd",
+          "configurations": {
+            "android": "1:143903378530:android:27ac016c7a6f233c0c553b",
+            "ios": "1:143903378530:ios:1e3484777fcaf1540c553b"
+          }
+        },
+        "lib/firebase_options_qa.dart": {
+          "projectId": "freshcheck-qa",
+          "configurations": {
+            "android": "1:764127094591:android:5e3eb7e76e21f96e87958a",
+            "ios": "1:764127094591:ios:6907b8694dd0397087958a"
+          }
+        },
+        "lib/firebase_options_staging.dart": {
+          "projectId": "freshcheck-staging",
+          "configurations": {
+            "android": "1:187557542336:android:c9f32c69bedca653adf025",
+            "ios": "1:187557542336:ios:d80de4eaac71094cadf025"
+          }
+        },
+        "lib/firebase_options_prod.dart": {
+          "projectId": "freshcheck-prod",
+          "configurations": {
+            "android": "1:368703838612:android:b2f37ba77e12fbcbf79781",
+            "ios": "1:368703838612:ios:5f96267dc7a6319df79781"
+          }
+        }
+      }
+    }
+  }
+}

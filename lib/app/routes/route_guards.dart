@@ -19,10 +19,8 @@ class RouteGuard {
 
     // final bool isAuthenticated = sl<AuthRepository>().isAuthenticated;
     // final bool isPublicRoute =
-    //     state.matchedLocation == RoutePaths.splash ||
-    //     state.matchedLocation == RoutePaths.login ||
-    //     state.matchedLocation == RoutePaths.register;
-    // if (!isAuthenticated && !isPublicRoute) return RoutePaths.login;
+    //     state.matchedLocation == RoutePaths.splash;
+    // if (!isAuthenticated && !isPublicRoute) return RoutePaths.splash;
 
     return null; // allow all navigation during development
   }

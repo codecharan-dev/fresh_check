@@ -24,6 +24,6 @@ export 'package:fresh_check/app/routes/route_names.dart';
 export 'package:fresh_check/app/routes/route_paths.dart';
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
-// Uncomment each line as the file is created:
-// export 'package:fresh_check/app/theme/app_colors.dart';
-// export 'package:fresh_check/app/theme/app_theme.dart';
+export 'package:fresh_check/app/theme/app_colors.dart';
+export 'package:fresh_check/app/theme/app_text_theme.dart';
+export 'package:fresh_check/app/theme/app_theme.dart';

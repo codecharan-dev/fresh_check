@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fresh_check/app/app_exports.dart';
 import 'package:fresh_check/app/di/injection.dart';
-import 'package:fresh_check/features/splash/presentation/bloc/splash_bloc.dart';
-import 'package:fresh_check/features/splash/presentation/bloc/splash_event.dart';
-import 'package:fresh_check/features/splash/presentation/bloc/splash_state.dart';
+import 'package:fresh_check/features/splash/splash_exports.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -30,7 +28,7 @@ class _SplashView extends StatelessWidget {
       listener: (context, state) {
         state.whenOrNull(
           completed: () =>
-              context.pushReplacementNamed(RouteNames.welcome),
+              context.pushReplacementNamed(RouteNames.loginScreen),
         );
 
       },
@@ -77,23 +75,21 @@ class _SplashView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              const Text(
+              Text(
                 'FreshCheck',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF2E7D32),
-                  letterSpacing: 1.2,
-                ),
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF2E7D32),
+                      letterSpacing: 1.2,
+                    ),
               ),
               const SizedBox(height: 8),
-              const Text(
+              Text(
                 'Know your food. Trust your plate.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF757575),
-                  letterSpacing: 0.5,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF757575),
+                      letterSpacing: 0.5,
+                    ),
               ),
             ],
           ),

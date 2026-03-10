@@ -1,8 +1,11 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fresh_check/app/routes/app_router.dart';
 import 'package:fresh_check/app/routes/navigation_service.dart';
 import 'package:fresh_check/config/env.dart';
+import 'package:fresh_check/core/storage/storage_exports.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Global service locator.
 // Always import this file directly — never through a barrel.
@@ -40,7 +43,7 @@ void initCoreDependencies() {
   _registerRouter();
   // Uncomment as each core layer file is built:
   // _registerNetwork();
-  // _registerStorage();
+  _registerStorage();
 }
 
 // ── Config ────────────────────────────────────────────────────────────────────
@@ -78,15 +81,25 @@ void _registerRouter() {
 
 // ── Storage ───────────────────────────────────────────────────────────────────
 // FlutterSecureStorage constructor is sync — safe for lazy singleton.
-// SharedPreferences.getInstance() is async — register it inside SplashBloc:
-//   final prefs = await SharedPreferences.getInstance();
-//   sl.registerSingleton<SharedPreferences>(prefs);
-// Feature injection files can then safely call sl<SharedPreferences>() once
-// SplashBloc has completed its async init sequence.
-//
-// void _registerStorage() {
-//   if (sl.isRegistered<FlutterSecureStorage>()) return;
-//   sl.registerLazySingleton<FlutterSecureStorage>(
-//     () => const FlutterSecureStorage(),
-//   );
-// }
+// SharedPreferences.getInstance() is async — registered via
+// registerLocalStorage() called from SplashBloc after async init.
+
+void _registerStorage() {
+  if (sl.isRegistered<FlutterSecureStorage>()) return;
+  sl.registerLazySingleton<FlutterSecureStorage>(
+    () => const FlutterSecureStorage(),
+  );
+  sl.registerLazySingleton<SecuredStorageService>(
+    () => SecuredStorage(sl<FlutterSecureStorage>()),
+  );
+}
+
+/// Called from [SplashBloc] after async SharedPreferences initialization.
+/// Registers [SharedPreferences] and [StorageService] in the service locator.
+void registerLocalStorage(SharedPreferences prefs) {
+  if (sl.isRegistered<SharedPreferences>()) return;
+  sl.registerSingleton<SharedPreferences>(prefs);
+  sl.registerLazySingleton<StorageService>(
+    () => LocalStorage(sl<SharedPreferences>()),
+  );
+}

@@ -22,16 +22,16 @@
 //   Uncomment the line below as the corresponding file is written.
 //   Run `fvm flutter analyze` after each addition to verify 0 issues.
 
+// ── Constants ─────────────────────────────────────────────────────────────────
+// export 'package:fresh_check/core/constants/api_constants.dart';
+export 'package:fresh_check/core/constants/storage_keys.dart';
+
 // ── Error ─────────────────────────────────────────────────────────────────────
 // export 'package:fresh_check/core/error/exceptions.dart';
-// export 'package:fresh_check/core/error/failures.dart';
+export 'package:fresh_check/core/error/failures/failures.dart';
 
 // ── UseCase ───────────────────────────────────────────────────────────────────
 // export 'package:fresh_check/core/usecase/usecase.dart';
-
-// ── Constants ─────────────────────────────────────────────────────────────────
-// export 'package:fresh_check/core/constants/api_constants.dart';
-// export 'package:fresh_check/core/constants/storage_keys.dart';
 
 // ── Extensions ────────────────────────────────────────────────────────────────
 // export 'package:fresh_check/core/extensions/context_extensions.dart';

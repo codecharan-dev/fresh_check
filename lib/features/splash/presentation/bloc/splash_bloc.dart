@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fresh_check/app/di/injection.dart';
 import 'package:fresh_check/features/splash/presentation/bloc/splash_event.dart';
 import 'package:fresh_check/features/splash/presentation/bloc/splash_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   SplashBloc() : super(const SplashState.initial()) {
@@ -12,6 +14,11 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     Emitter<SplashState> emit,
   ) async {
     emit(const SplashState.loaded());
+
+    // Initialize SharedPreferences and register in DI container.
+    final prefs = await SharedPreferences.getInstance();
+    registerLocalStorage(prefs);
+
     await Future.delayed(const Duration(seconds: 2));
     emit(const SplashState.completed());
   }

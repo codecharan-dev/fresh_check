@@ -11,19 +11,5 @@ class RoutePaths {
 
   // ── Root paths ────────────────────────────────────────────────────
   static const String splash = '/';
-  static const String welcome = '/welcome';
   static const String login = '/login';
-  static const String register = '/register';
-  static const String home = '/home';
-  static const String scan = '/scan';
-  static const String history = '/history';
-  static const String profile = '/profile';
-  static const String settings = '/settings';
-  static const String subscription = '/subscription';
-
-  // ── Nested segments (use in route definition only) ────────────────
-  static const String scanResultSegment = 'result';
-
-  // ── Full nested paths (use for navigation) ────────────────────────
-  static const String scanResult = '$scan/$scanResultSegment'; // /scan/result
 }

@@ -20,30 +20,14 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fresh_check/app/app_exports.dart';
 import 'package:fresh_check/app/routes/app_route_transitions.dart';
-import 'package:fresh_check/app/routes/navigation_service.dart';
 import 'package:fresh_check/app/routes/route_guards.dart';
-import 'package:fresh_check/app/routes/route_names.dart';
-import 'package:fresh_check/app/routes/route_paths.dart';
 import 'package:fresh_check/features/auth/di/auth_injection.dart';
 import 'package:fresh_check/features/auth/presentation/screens/login_screen.dart';
-import 'package:fresh_check/features/auth/presentation/screens/signup_screen.dart';
-import 'package:fresh_check/features/history/di/history_injection.dart';
-import 'package:fresh_check/features/profile/di/profile_injection.dart';
-import 'package:fresh_check/features/scan/di/scan_injection.dart';
-import 'package:fresh_check/features/settings/di/settings_injection.dart';
 import 'package:fresh_check/features/splash/di/splash_injection.dart';
 import 'package:fresh_check/features/splash/presentation/screens/splash_screen.dart';
-import 'package:fresh_check/features/subscription/di/subscription_injection.dart';
-import 'package:fresh_check/features/welcome/presentation/screens/welcome_screen.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:fresh_check/features/scan/presentation/screens/scan_screen.dart';
-// import 'package:fresh_check/features/scan/presentation/screens/scan_result_screen.dart';
-// import 'package:fresh_check/features/history/presentation/screens/history_screen.dart';
-// import 'package:fresh_check/features/profile/presentation/screens/profile_screen.dart';
-// import 'package:fresh_check/features/settings/presentation/screens/settings_screen.dart';
-// import 'package:fresh_check/features/subscription/presentation/screens/subscription_screen.dart';
-
 // ─────────────────────────────────────────────────────────────────────────────
 
 class AppRouter {
@@ -80,23 +64,10 @@ class AppRouter {
           },
         ),
 
-        // ── Welcome ──────────────────────────────────────────────────────────
-        // Uses push() from splash — slide transition plays on entry.
-        // PopScope(canPop: false) in WelcomeScreen prevents back to splash.
-        GoRoute(
-          path: RoutePaths.welcome,
-          name: RouteNames.welcome,
-          pageBuilder: (context, state) => AppRouteTransitions.buildPage(
-            context: context,
-            state: state,
-            child: const WelcomeScreen(),
-          ),
-        ),
-
         // ── Auth ─────────────────────────────────────────────────────────────
         GoRoute(
           path: RoutePaths.login,
-          name: RouteNames.login,
+          name: RouteNames.loginScreen,
           pageBuilder: (context, state) {
             registerAuthDependencies();
             return AppRouteTransitions.buildPage(
@@ -106,151 +77,8 @@ class AppRouter {
             );
           },
         ),
-        GoRoute(
-          path: RoutePaths.register,
-          name: RouteNames.register,
-          pageBuilder: (context, state) {
-            registerAuthDependencies(); // same guard — no duplicate work
-            return AppRouteTransitions.buildPage(
-              context: context,
-              state: state,
-              child: const SignupScreen(),
-            );
-          },
-        ),
 
-        // ── Home ─────────────────────────────────────────────────────────────
-        // Home typically aggregates multiple features (scan shortcut, history
-        // preview). Register each feature the home page depends on here.
-        GoRoute(
-          path: RoutePaths.home,
-          name: RouteNames.home,
-          pageBuilder: (context, state) {
-            // registerHomeDependencies(); // add when home feature is built
-            return AppRouteTransitions.buildPage(
-              context: context,
-              state: state,
-              child: const _PlaceholderScreen(label: 'Home'),
-            );
-          },
-        ),
-
-        // ── Scan (with nested result) ─────────────────────────────────────────
-        GoRoute(
-          path: RoutePaths.scan,
-          name: RouteNames.scan,
-          pageBuilder: (context, state) {
-            registerScanDependencies();
-            return AppRouteTransitions.buildPage(
-              context: context,
-              state: state,
-              child: const _PlaceholderScreen(label: 'Scan'),
-              // Replace with: child: const ScanScreen(),
-              transition: AppTransition.fade,
-            );
-          },
-          routes: [
-            GoRoute(
-              path: RoutePaths.scanResultSegment, // resolves → /scan/result
-              name: RouteNames.scanResult,
-              pageBuilder: (context, state) {
-                registerScanDependencies(); // guard returns immediately — already registered
-                return AppRouteTransitions.buildPage(
-                  context: context,
-                  state: state,
-                  child: const _PlaceholderScreen(label: 'Scan Result'),
-                  // Replace with: child: const ScanResultScreen(),
-                );
-              },
-            ),
-          ],
-        ),
-
-        // ── History ───────────────────────────────────────────────────────────
-        GoRoute(
-          path: RoutePaths.history,
-          name: RouteNames.history,
-          pageBuilder: (context, state) {
-            registerHistoryDependencies();
-            return AppRouteTransitions.buildPage(
-              context: context,
-              state: state,
-              child: const _PlaceholderScreen(label: 'History'),
-              // Replace with: child: const HistoryScreen(),
-            );
-          },
-        ),
-
-        // ── Profile ───────────────────────────────────────────────────────────
-        GoRoute(
-          path: RoutePaths.profile,
-          name: RouteNames.profile,
-          pageBuilder: (context, state) {
-            registerProfileDependencies();
-            return AppRouteTransitions.buildPage(
-              context: context,
-              state: state,
-              child: const _PlaceholderScreen(label: 'Profile'),
-              // Replace with: child: const ProfileScreen(),
-            );
-          },
-        ),
-
-        // ── Settings ──────────────────────────────────────────────────────────
-        GoRoute(
-          path: RoutePaths.settings,
-          name: RouteNames.settings,
-          pageBuilder: (context, state) {
-            registerSettingsDependencies();
-            return AppRouteTransitions.buildPage(
-              context: context,
-              state: state,
-              child: const _PlaceholderScreen(label: 'Settings'),
-              // Replace with: child: const SettingsScreen(),
-            );
-          },
-        ),
-
-        // ── Subscription ──────────────────────────────────────────────────────
-        GoRoute(
-          path: RoutePaths.subscription,
-          name: RouteNames.subscription,
-          pageBuilder: (context, state) {
-            registerSubscriptionDependencies();
-            return AppRouteTransitions.buildPage(
-              context: context,
-              state: state,
-              child: const _PlaceholderScreen(label: 'Subscription'),
-              // Replace with: child: const SubscriptionScreen(),
-            );
-          },
-        ),
       ],
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Placeholder screens
-// Replace each pageBuilder child with the real page when the feature is built.
-// Delete these classes once all routes are wired to real pages.
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _PlaceholderScreen extends StatelessWidget {
-  const _PlaceholderScreen({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(label)),
-      body: Center(
-        child: Text(
-          '$label — coming soon',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-      ),
     );
   }
 }

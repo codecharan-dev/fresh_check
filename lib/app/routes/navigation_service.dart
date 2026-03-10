@@ -20,7 +20,7 @@ import 'package:go_router/go_router.dart';
 //
 // Usage:
 //   NavigationService.push(RoutePaths.scan);
-//   NavigationService.pushReplacement(RoutePaths.welcome);
+//   NavigationService.pushReplacement(RoutePaths.home);
 //   NavigationService.go(RoutePaths.home);
 class NavigationService {
   NavigationService._();
@@ -146,6 +146,14 @@ class NavigationService {
 
   /// Pop the top-most route, optionally returning [result] to the caller.
   static void pop<T extends Object?>([T? result]) => _router.pop(result);
+
+  /// Pop routes until [predicate] returns true.
+  ///
+  /// Useful for popping back to a specific screen in a deep stack.
+  /// Example: `NavigationService.popUntil((route) => route.isFirst);`
+  static void popUntil(bool Function(Route<dynamic>) predicate) {
+    navigatorKey.currentState?.popUntil(predicate);
+  }
 
   // ── Query ───────────────────────────────────────────────────────────
 
